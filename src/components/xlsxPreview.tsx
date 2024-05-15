@@ -79,7 +79,7 @@ export default function XLSXPreview(
                     {data.map((row) => {
                         return (
                             <tr key={row}>
-                                {Object.values(row).map((value) => (
+                                {Object.values(row).map((value: any) => (
                                     <td className="py-[4px] px-[8px] border-2 border-solid border-gray-200" key={value}>{value}</td>
                                 ))}
                             </tr>

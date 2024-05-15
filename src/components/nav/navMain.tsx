@@ -232,7 +232,10 @@ export default function NavMain() {
                     </div>
                 </Tabs>
             </div>
-            <CommandMenu links={links} />
+            {
+                links &&  <CommandMenu links={links} />
+            }
+           
         </div>
     )
 }

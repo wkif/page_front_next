@@ -7,12 +7,11 @@ const baseURL = process.env.NEXT_PUBLIC_BASE_URL;
 declare module "axios" {
   interface AxiosRequestConfig {
     timeout?: number;
-    headers?: any;
+    headers?: AxiosRequestHeaders;
   }
   interface AxiosResponse {
     code: number;
     msg: string;
-    data: any;
   }
 }
 
@@ -28,7 +27,7 @@ axios.interceptors.response.use(
 const token = useStore.getState().token
 axios.interceptors.request.use(
   (config: AxiosRequestConfig) => {
-    config.headers['Authorization'] = token ? `Bearer ${token}` : '';
+    if(config.headers) config.headers['Authorization'] = token ? `Bearer ${token}` : '';
     config.timeout = 10000;
     return config;
   },

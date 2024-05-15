@@ -27,7 +27,7 @@ export default function UploadDialogComp({
     open: boolean
     setOpen: (open: boolean) => void
 }) {
-    const [file, setFile] = useState()
+    const [file, setFile] = useState<any>()
     const submit = async () => {
         if (!file) {
             toast("Please select file")

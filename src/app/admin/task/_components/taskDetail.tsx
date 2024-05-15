@@ -164,7 +164,7 @@ export default function TaskDetail({ data }: { data: TaskType }) {
                         <div className={
                             cn(
                                 "flex flex-row items-center",
-                                relativeDeviation != 0 ? "text-red-500" : "text-green-500"
+                                Number(relativeDeviation) != 0 ? "text-red-500" : "text-green-500"
                             )
                         }>
                             <span className="mr-2">Relative deviation:</span>
