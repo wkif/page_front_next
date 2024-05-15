@@ -180,7 +180,7 @@ export default function TaskPage() {
                 <div>
                     <h3 className="text-lg font-medium">Task</h3>
                     <p className="text-sm text-muted-foreground">
-                        Here's a list of your tasks for this month!
+                        Here is a list of your tasks for this month!
                     </p>
                 </div>
 
