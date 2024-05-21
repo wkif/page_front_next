@@ -31,11 +31,9 @@ import { apis } from "@/apis"
 import { toast } from "sonner"
 import { TaskType } from "@/type"
 
-import TaskDetail from "../../app/admin/task/_components/taskDetail"
-import EditTask from "../../app/admin/task/_components/editDialog"
-
-import { Dialog, DialogTrigger } from "../ui/dialog"
 import { Badge } from "../ui/badge"
+import MonthDayComp from "./_components/MonthDay"
+
 
 
 function MonthComp() {
@@ -73,12 +71,12 @@ function MonthComp() {
     const [TaskLIst_actual, setTaskList_actual] = React.useState<{
         day: number
         date: string
-        task: TaskType
+        tasks: TaskType[]
     }[]>();
     const [TaskLIst_estimate, setTaskList_estimate] = React.useState<{
         day: number
         date: string
-        task: TaskType
+        tasks: TaskType[]
     }[]>();
     const [holidayData, setHolidayData] = React.useState<{
         date: string
@@ -107,7 +105,7 @@ function MonthComp() {
         })
         if (res1.code === 200) {
             setTaskList_actual(res1.data)
-        }else{
+        } else {
             toast(res1.msg)
         }
         const res = await apis.getHoildayByMonth({
@@ -120,60 +118,9 @@ function MonthComp() {
             setHolidayData(res.data.holidayData)
         }
     }
-    const [selectTask, setSelectTask] = React.useState<TaskType | null>(null)
-    const [open, setOpen] = React.useState(false)
-    const [edit, setEdit] = React.useState(false)
-    const openDetail = (index: number, type: number) => {
-        if (type == 1) {
-            const task = TaskLIst_actual?.find((dayItem) => {
-                return dayItem.day == index
-            })?.task
-            if (task) {
-                setSelectTask(task)
-                setOpen(true)
-            }
-        }
-        if (type == 2) {
-            const task = TaskLIst_estimate?.find((dayItem) => {
-                return dayItem.day == index
-            })?.task
-            if (task) {
-                setSelectTask(task)
-                setOpen(true)
-            }
-        }
-
-    }
-    const openEdit = (index: number, type: number) => {
-        if (type == 1) {
-            const task = TaskLIst_actual?.find((dayItem) => {
-                return dayItem.day == index
-            })?.task
-            if (task) {
-                setSelectTask(task)
-                setEdit(true)
-            }
-        }
-        if (type == 2) {
-            const task = TaskLIst_estimate?.find((dayItem) => {
-                return dayItem.day == index
-            })?.task
-            if (task) {
-                setSelectTask(task)
-                setEdit(true)
-            }
-        }
-    }
     const [loading, setLoading] = React.useState(false)
     return <>
         <div>
-            <Dialog open={open} onOpenChange={setOpen}>
-                {
-                    selectTask && <TaskDetail data={selectTask} />
-                }
-            </Dialog>
-            {selectTask && <EditTask open={edit} taskId={selectTask.id} setOpen={setEdit} getList={getTaskByMonth} />}
-
             <div className="text-3xl mb-5 w-[450px] flex flex-row items-center justify-evenly">
                 <Button variant="outline" size="icon" onClick={prevMonth} >
                     <ArrowLeftIcon />
@@ -215,99 +162,9 @@ function MonthComp() {
                     {
                         Array.from({ length: totalDays }).map((item, index) => {
                             return <>
-                                <div key={index} className={
-                                    cn("text-center p-4 border-2 hover:bg-slate-100 hover:text-black h-32 rounded-md", {
-                                        "bg-blue-300 text-white": currentMonth == new Date().getMonth() && currentYear == new Date().getFullYear() && index + 1 == new Date().getDate()
-                                    })
-                                }>
-                                    <div className="text-xl p-1 flex flex-row items-center">
-                                        <span>{index + 1}</span>
-                                        {
-                                            holidayData?.find((dayItem) => {
-                                                return dayItem.day == index + 1
-                                            })?.status == 0 || holidayData?.find((dayItem) => {
-                                                return dayItem.day == index + 1
-                                            })?.status == 2 ? <Badge className="bg-[#dbe2ef] ml-auto" variant="outline">Work</Badge> : ""
-                                        }
-                                    </div>
-                                    <div>
-                                        <TooltipProvider>
-                                            <Tooltip>
-                                                <TooltipTrigger>
-
-                                                    <ContextMenu>
-                                                        <ContextMenuTrigger>
-                                                            <div className="text-sm overflow-hidden text-ellipsis whitespace-nowrap text-white bg-[#aa96da] px-2 max-w-40">
-                                                                {
-                                                                    TaskLIst_estimate?.find((dayItem) => {
-                                                                        return dayItem.day == index + 1
-                                                                    })?.task ?
-                                                                        'E:' + TaskLIst_estimate?.find((dayItem) => {
-                                                                            return dayItem.day == index + 1
-                                                                        })?.task.title :
-                                                                        ""
-                                                                }
-                                                            </div>
-                                                        </ContextMenuTrigger>
-                                                        <ContextMenuContent>
-                                                            <ContextMenuItem onClick={() => openDetail(index + 1, 2)}>Detail</ContextMenuItem>
-                                                            <ContextMenuItem onClick={() => openEdit(index + 1, 2)}>Edit</ContextMenuItem>
-                                                        </ContextMenuContent>
-                                                    </ContextMenu>
-                                                </TooltipTrigger>
-                                                <TooltipContent>
-                                                    <p>
-                                                        {
-                                                            TaskLIst_estimate?.find((dayItem) => {
-                                                                return dayItem.day == index + 1
-                                                            })?.task?.mainTitle + " " + TaskLIst_estimate?.find((dayItem) => {
-                                                                return dayItem.day == index + 1
-                                                            })?.task?.title
-                                                        }
-                                                    </p>
-                                                </TooltipContent>
-                                            </Tooltip>
-                                        </TooltipProvider>
-                                    </div>
-
-                                    <div>
-                                        <TooltipProvider>
-                                            <Tooltip>
-                                                <TooltipTrigger>
-                                                    <ContextMenu>
-                                                        <ContextMenuTrigger><div className="text-sm overflow-hidden text-ellipsis whitespace-nowrap text-white bg-[#fcbad3] px-2 max-w-40" >
-                                                            {
-                                                                TaskLIst_actual?.find((dayItem) => {
-                                                                    return dayItem.day == index + 1
-                                                                })?.task ? 'A:' + TaskLIst_actual?.find((dayItem) => {
-                                                                    return dayItem.day == index + 1
-                                                                })?.task.title : ""
-                                                            }
-                                                        </div></ContextMenuTrigger>
-                                                        <ContextMenuContent>
-                                                            <ContextMenuItem onClick={() => openDetail(index + 1, 1)}>Detail</ContextMenuItem>
-                                                            <ContextMenuItem onClick={() => openEdit(index + 1, 1)}>Edit</ContextMenuItem>
-                                                        </ContextMenuContent>
-                                                    </ContextMenu>
-                                                </TooltipTrigger>
-                                                <TooltipContent>
-                                                    <p>
-                                                        {
-                                                            TaskLIst_actual?.find((dayItem) => {
-                                                                return dayItem.day == index + 1
-                                                            })?.task?.mainTitle + " " + TaskLIst_actual?.find((dayItem) => {
-                                                                return dayItem.day == index + 1
-                                                            })?.task?.title
-                                                        }
-                                                    </p>
-                                                </TooltipContent>
-                                            </Tooltip>
-                                        </TooltipProvider>
-                                    </div>
-
-
-                                </div>
+                            <MonthDayComp key={index} day={index + 1} holidayData={holidayData} TaskLIst_estimate={TaskLIst_estimate} TaskLIst_actual={TaskLIst_actual} getTaskByMonth={getTaskByMonth} currentMonth={currentMonth} currentYear={currentYear}></MonthDayComp>
                             </>
+                          
                         })
                     }
                 </div>
@@ -318,7 +175,7 @@ function MonthComp() {
 function WeekComp() {
 
     return <>
-    <div>Waiting...</div>
+        <div>Waiting...</div>
     </>
 }
 
