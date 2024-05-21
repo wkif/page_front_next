@@ -129,3 +129,11 @@ export const getTaskByMonth = (data: {
 }) => {
     return postAxios({ url: "/task/getTaskByMonth", data })
 }
+
+export const getHoildayByMonth = (data: {
+    userId: number
+    year: number
+    month: number
+}) => {
+    return postAxios({ url: "/task/getHoildayByMonth", data })
+}

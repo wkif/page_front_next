@@ -95,13 +95,20 @@ function MonthComp() {
             year: currentYear,
             month: currentMonth + 1
         })
-        setLoading(false)
         if (code === 200) {
             setTaskList_actual(data.TaskLIst_actual)
             setTaskList_estimate(data.TaskLIst_estimate)
-            setHolidayData(data.holidayData)
         } else {
             toast(msg)
+        }
+        const res = await apis.getHoildayByMonth({
+            userId: useStore.getState().userInfo?.id,
+            year: currentYear,
+            month: currentMonth + 1
+        })
+        setLoading(false)
+        if (res.code === 200) {
+            setHolidayData(res.data.holidayData)
         }
     }
     const [selectTask, setSelectTask] = React.useState<TaskType | null>(null)

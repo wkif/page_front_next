@@ -31,7 +31,8 @@ import {
   exportDaily,
   downloadTemplate,
   getLunarDate,
-  getTaskByMonth
+  getTaskByMonth,
+  getHoildayByMonth
 } from "./task";
 
 export const apis = {
@@ -62,5 +63,6 @@ export const apis = {
   exportDaily,
   downloadTemplate,
   getLunarDate,
-  getTaskByMonth
+  getTaskByMonth,
+  getHoildayByMonth
 };

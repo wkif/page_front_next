@@ -4,9 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "local": "next dev",
     "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "start": "next start --port 3001",
+    "lint": "next lint",
+    "prod": "next build && next start"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
