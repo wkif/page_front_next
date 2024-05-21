@@ -122,14 +122,21 @@ export const getLunarDate = (date: string) => {
     return postAxios({ url: "/getLunarDate", data: { date } })
 }
 
-export const getTaskByMonth = (data: {
+export const getEstimateTaskByMonth = (data: {
     userId: number
     year: number
     month: number
 }) => {
-    return postAxios({ url: "/task/getTaskByMonth", data })
+    return postAxios({ url: "/task/getEstimateTaskByMonth", data })
 }
 
+export const getActualTaskByMonth = (data: {
+    userId: number
+    year: number
+    month: number
+}) => {
+    return postAxios({ url: "/task/getActualTaskByMonth", data })
+}
 export const getHoildayByMonth = (data: {
     userId: number
     year: number

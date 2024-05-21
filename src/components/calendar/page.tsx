@@ -90,16 +90,25 @@ function MonthComp() {
 
     const getTaskByMonth = async () => {
         setLoading(true)
-        const { code, data, msg } = await apis.getTaskByMonth({
+        const { code, data, msg } = await apis.getEstimateTaskByMonth({
             userId: useStore.getState().userInfo?.id,
             year: currentYear,
             month: currentMonth + 1
         })
         if (code === 200) {
-            setTaskList_actual(data.TaskLIst_actual)
-            setTaskList_estimate(data.TaskLIst_estimate)
+            setTaskList_estimate(data)
         } else {
             toast(msg)
+        }
+        const res1 = await apis.getActualTaskByMonth({
+            userId: useStore.getState().userInfo?.id,
+            year: currentYear,
+            month: currentMonth + 1
+        })
+        if (res1.code === 200) {
+            setTaskList_actual(res1.data)
+        }else{
+            toast(res1.msg)
         }
         const res = await apis.getHoildayByMonth({
             userId: useStore.getState().userInfo?.id,
