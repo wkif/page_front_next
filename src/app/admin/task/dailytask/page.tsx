@@ -86,12 +86,7 @@ export default function DailyTaskPage() {
             userId: useStore.getState().userInfo?.id
         })
         if (code==200) {
-            const a = document.createElement('a')
-            a.href = data.url
-            a.download = name;
-            document.body.appendChild(a)
-            a.click()
-            document.body.removeChild(a)
+            window.open(data.url)
         } else {
             toast('Download failed')
         }
@@ -114,12 +109,7 @@ export default function DailyTaskPage() {
             type: 1
         })
         if (code==200) {
-            const a = document.createElement('a')
-            a.href = data.url
-            a.download = data.name;
-            document.body.appendChild(a)
-            a.click()
-            document.body.removeChild(a)
+           window.open(data.url)
         } else {
             toast('Download failed:'+msg)
         }

@@ -88,12 +88,7 @@ export default function MonthlyTaskPage() {
             userId: useStore.getState().userInfo?.id
         })
         if (res.code==200) {
-            const a = document.createElement('a')
-            a.href = res.data.url
-            a.download = name;
-            document.body.appendChild(a)
-            a.click()
-            document.body.removeChild(a)
+            window.open(res.data.url)
         } else {
             toast('Download failed')
         }
@@ -105,12 +100,7 @@ export default function MonthlyTaskPage() {
             type: 2
         })
         if (res.code==200) {
-            const a = document.createElement('a')
-            a.href = res.data.url
-            a.download = res.data.name;
-            document.body.appendChild(a)
-            a.click()
-            document.body.removeChild(a)
+            window.open(res.data.url)
         } else {
             toast('Download failed')
         }
