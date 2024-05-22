@@ -118,10 +118,12 @@ function ComboboComp({
 export default function AddDialogCom(
     {
         catOptions,
-        getCategoryList
+        getCategoryList,
+        getLinks
     }: {
         catOptions: Array<CategoryType>
         getCategoryList: () => void
+        getLinks: (page: number) => void
     }
 ) {
     const [formData, setFormData] = useState<{
@@ -141,7 +143,6 @@ export default function AddDialogCom(
     })
 
     const submit = async () => {
-        console.log('formData', formData)
         if (!formData.title || !formData.url || !formData.categoryId) {
             toast('title or url is empty')
             return
@@ -158,6 +159,7 @@ export default function AddDialogCom(
         )
         if (code === 200) {
             toast(msg)
+            getLinks(1)
         } else {
             toast(msg)
         }

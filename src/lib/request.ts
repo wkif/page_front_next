@@ -67,7 +67,6 @@ export function postAxios({ url, data, headers, responseType }: { url: string; d
     if (responseType) {
       config.responseType = responseType
     }
-    console.log('config', config)
     axios(config)
       .then((res) => {
         resolve(res.data);
