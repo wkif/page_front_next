@@ -70,7 +70,7 @@ export default function DailyTaskPage() {
     const [open, setOpen] = useState(false)
     const deleteHistoryFile = async (id: number) => {
         const { code, data, msg } = await apis.deleteHistoryFile({
-            id,
+            hisId:id,
             userId: useStore.getState().userInfo?.id
         })
         if (code === 200) {
@@ -81,15 +81,13 @@ export default function DailyTaskPage() {
         }
     }
     const downloadHistoryFile = async (id: number, name: string) => {
-        const res = await apis.downloadHistoryFile({
+        const {code,data,msg} = await apis.downloadHistoryFile({
             hisId: id,
             userId: useStore.getState().userInfo?.id
-        }) as unknown as Blob
-        if (res) {
-            const blob = new Blob([res], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' })
-            const url = window.URL.createObjectURL(blob)
+        })
+        if (code==200) {
             const a = document.createElement('a')
-            a.href = url
+            a.href = data.url
             a.download = name;
             document.body.appendChild(a)
             a.click()
@@ -111,21 +109,19 @@ export default function DailyTaskPage() {
         }
     }
     const downloadTemplate = async () => {
-        const res = await apis.downloadTemplate({
+        const {code,data,msg} = await apis.downloadTemplate({
             userId: useStore.getState().userInfo?.id,
             type: 1
-        }) as unknown as Blob
-        if (res) {
-            const blob = new Blob([res], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' })
-            const url = window.URL.createObjectURL(blob)
+        })
+        if (code==200) {
             const a = document.createElement('a')
-            a.href = url
-            a.download = 'daily_template.xlsx';
+            a.href = data.url
+            a.download = data.name;
             document.body.appendChild(a)
             a.click()
             document.body.removeChild(a)
         } else {
-            toast('Download failed')
+            toast('Download failed:'+msg)
         }
     }
     const [upload, setUpload] = useState(false)

@@ -72,7 +72,7 @@ export default function MonthlyTaskPage() {
     const [open, setOpen] = useState(false)
     const deleteHistoryFile = async (id: number) => {
         const { code, data, msg } = await apis.deleteHistoryFile({
-            id,
+            hisId:id,
             userId: useStore.getState().userInfo?.id
         })
         if (code === 200) {
@@ -86,12 +86,10 @@ export default function MonthlyTaskPage() {
         const res = await apis.downloadHistoryFile({
             hisId: id,
             userId: useStore.getState().userInfo?.id
-        }) as unknown as Blob
-        if (res) {
-            const blob = new Blob([res], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' })
-            const url = window.URL.createObjectURL(blob)
+        })
+        if (res.code==200) {
             const a = document.createElement('a')
-            a.href = url
+            a.href = res.data.url
             a.download = name;
             document.body.appendChild(a)
             a.click()
@@ -105,13 +103,11 @@ export default function MonthlyTaskPage() {
         const res = await apis.downloadTemplate({
             userId: useStore.getState().userInfo?.id,
             type: 2
-        }) as unknown as Blob
-        if (res) {
-            const blob = new Blob([res], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' })
-            const url = window.URL.createObjectURL(blob)
+        })
+        if (res.code==200) {
             const a = document.createElement('a')
-            a.href = url
-            a.download = 'monthly_template.xlsx';
+            a.href = res.data.url
+            a.download = res.data.name;
             document.body.appendChild(a)
             a.click()
             document.body.removeChild(a)

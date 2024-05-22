@@ -66,14 +66,14 @@ export const deleteTask = (data: {
 }
 
 export const uploadTemplate = (data: FormData): Promise<ResType> => {
-    return postAxios({ url: "/task/uploadTemplate", data, headers: { "Content-Type": "multipart/form-data" } })
+    return postAxios({ url: "/oss/uploadTemplate", data, headers: { "Content-Type": "multipart/form-data" } })
 }
 
 export const downloadTemplate = (data: {
     userId: number
     type: number
 }) => {
-    return postAxios({ url: "/task/downloadTemplate", data, responseType: "blob" })
+    return postAxios({ url: "/oss/downloadTemplate", data })
 }
 
 export const getHistoryList = (data: {
@@ -87,12 +87,12 @@ export const downloadHistoryFile = (data: {
     userId: number
     hisId: number
 }) => {
-    return postAxios({ url: "/task/downloadHistoryFile", data, responseType: "blob" })
+    return postAxios({ url: "/task/downloadHistoryFile", data })
 }
 
 export const deleteHistoryFile = (data: {
     userId: number
-    id: number
+    hisId: number
 }) => {
     return postAxios({ url: "/task/deleteHistoryFile", data })
 }
