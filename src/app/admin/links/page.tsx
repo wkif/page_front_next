@@ -43,7 +43,6 @@ export default function LinkPage() {
         );
         if (code === 200) {
             setCatOptions(data.categoryList)
-            console.log('catOptions', catOptions, data.categoryList)
         } else {
             toast(msg)
         }
@@ -102,6 +101,9 @@ export default function LinkPage() {
         getCategoryList()
         getLinks(1)
     }, [])
+
+    const [edit, setEdit] = useState(false)
+    const [editType, setEditType] = useState(0)
     return (
         <>
             <AlertDialog open={open} onOpenChange={onOpenChange}>
@@ -109,7 +111,7 @@ export default function LinkPage() {
                     <AlertDialogHeader>
                         <AlertDialogTitle>Are you absolutely sure delete this link?</AlertDialogTitle>
                         <AlertDialogDescription>
-                        This action cannot be undone. This will permanently delete your link data from our servers.
+                            This action cannot be undone. This will permanently delete your link data from our servers.
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
@@ -118,6 +120,11 @@ export default function LinkPage() {
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
+            <Dialog open={edit} onOpenChange={setEdit}>
+                <DialogContent className="sm:max-w-[625px]">
+                    <AddDialogCom catOptions={catOptions} getCategoryList={getCategoryList} getLinks={getLinks} editType={editType} selId={selId} />
+                </DialogContent>
+            </Dialog>
             <div className="space-y-6">
                 <div className="flex items-center justify-between">
                     <div>
@@ -127,17 +134,14 @@ export default function LinkPage() {
                         </p>
                     </div>
                     <div>
+                        <Button variant="outline" size="icon">
+                            <PlusCircledIcon className="h-4 w-4" onClick={() => {
+                                setEditType(1)
+                                setSelId(0)
+                                setEdit(true)
+                            }} />
+                        </Button>
 
-                        <Dialog>
-                            <DialogTrigger asChild>
-                                <Button variant="outline" size="icon">
-                                    <PlusCircledIcon className="h-4 w-4" />
-                                </Button>
-                            </DialogTrigger>
-                            <DialogContent className="sm:max-w-[625px]">
-                                <AddDialogCom catOptions={catOptions} getCategoryList={getCategoryList} getLinks={getLinks} />
-                            </DialogContent>
-                        </Dialog>
                     </div>
                 </div>
                 <div className="px-5">
@@ -188,7 +192,7 @@ export default function LinkPage() {
                                     <TableHead className="text-right">Github</TableHead>
                                     <TableHead>Desc</TableHead>
                                     <TableHead>Tags</TableHead>
-                                    <TableHead className="text-center">Edit</TableHead>
+                                    <TableHead className="text-center">Action</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
@@ -213,7 +217,12 @@ export default function LinkPage() {
                                             <span className="text-red-500" onClick={() => {
                                                 setSelId(link.id)
                                                 onOpenChange(true)
-                                            }}>delete</span>
+                                            }}>Delete</span>
+                                            <span className="text-blue-500 ml-2" onClick={() => {
+                                                setSelId(link.id)
+                                                setEditType(2)
+                                                setEdit(true)
+                                            }}>Edit</span>
                                         </TableCell>
                                     </TableRow>
                                 ))}

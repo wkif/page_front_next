@@ -119,11 +119,15 @@ export default function AddDialogCom(
     {
         catOptions,
         getCategoryList,
-        getLinks
+        getLinks,
+        editType,
+        selId
     }: {
         catOptions: Array<CategoryType>
         getCategoryList: () => void
         getLinks: (page: number) => void
+        editType: number
+        selId: number
     }
 ) {
     const [formData, setFormData] = useState<{
@@ -143,34 +147,78 @@ export default function AddDialogCom(
     })
 
     const submit = async () => {
+
+
         if (!formData.title || !formData.url || !formData.categoryId) {
             toast('title or url is empty')
             return
         }
-        if(formData.tags.split(',').length > 3) {
+        if (formData.tags.split(',').length > 3) {
             toast('tags is too many, max 3')
             return
         }
-        const { code, data, msg } = await apis.addLink(
+        if (editType == 1) {
+            const { code, data, msg } = await apis.addLink(
+                {
+                    ...formData,
+                    userId: useStore.getState().userInfo?.id
+                }
+            )
+            if (code === 200) {
+                toast(msg)
+                getLinks(1)
+            } else {
+                toast(msg)
+            }
+
+        }
+        if (editType === 2) {
+            const { code, data, msg } = await apis.editLink(
+                {
+                    ...formData,
+                    userId: useStore.getState().userInfo?.id,
+                    id: selId
+                }
+            )
+            if (code === 200) {
+                toast(msg)
+                getLinks(1)
+            } else {
+                toast(msg)
+            }
+        }
+
+
+    }
+    const getLinkById = async () => {
+        const { code, data, msg } = await apis.getLinkById(
             {
-                ...formData,
+                id: selId,
                 userId: useStore.getState().userInfo?.id
             }
         )
         if (code === 200) {
-            toast(msg)
-            getLinks(1)
+            setFormData(data)
         } else {
             toast(msg)
         }
     }
+    useEffect(() => {
+        // 编辑
+        if (editType === 2) {
+            getLinkById()
+        }
+    }, [])
 
     return (
         <>
             <DialogHeader>
-                <DialogTitle>Add</DialogTitle>
+                <DialogTitle>{
+                    editType === 1 ? 'Add' : 'Edit'}</DialogTitle>
                 <DialogDescription>
-                    Add a new link here.
+                    {
+                        editType === 1 ? 'Add' : 'Edit'
+                    }a new link here.
                 </DialogDescription>
             </DialogHeader>
             <div className="grid gap-4 py-4">

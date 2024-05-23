@@ -46,6 +46,24 @@ export const addLink = (data: {
 }) => {
   return postAxios({ url: "/links/addLink", data })
 }
+export const editLink = (data: {
+  id: number
+  userId: number
+  title: string
+  url: string
+  categoryId: number
+  description: string
+  tags: string
+  github: string
+}) => {
+  return postAxios({ url: "/links/editLink", data })
+}
+export const getLinkById = (data: {
+  id: number
+  userId: number
+}) => {
+  return postAxios({ url: "/links/getLinkById", data })
+}
 
 export const addCategory = (data: {
   userId: number

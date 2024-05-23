@@ -215,7 +215,7 @@ export default function EditTask(
                 </DialogHeader>
                 <div className="grid w-full grid-cols-2 gap-4 my-6">
                     <div className="flex flex-row items-center">
-                        <span className="mr-2">Main title:</span>
+                        <span className="mr-2 after:content-['*'] after:ml-2 after:mr-2 after:text-red-400">Main title: </span>
                         <Input type="text"
                             value={form?.mainTitle}
                             onChange={(e) => setForm({ ...form, mainTitle: e.target.value })}
@@ -223,7 +223,7 @@ export default function EditTask(
                     </div>
                     {/* title */}
                     <div className="flex flex-row items-center">
-                        <span className="mr-2">Title:</span>
+                        <span className="mr-2 after:content-['*'] after:ml-2 after:mr-2 after:text-red-400">Title:</span>
                         <Input type="text"
                             value={form?.title}
                             onChange={(e) => setForm({ ...form, title: e.target.value })}
@@ -231,7 +231,7 @@ export default function EditTask(
                     </div>
                     {/* arranger */}
                     <div className="flex flex-row items-center">
-                        <span className="mr-2">Arranger:</span>
+                        <span className="mr-2 after:content-['*'] after:ml-2 after:mr-2 after:text-red-400">Arranger:</span>
                         <Input type="text"
                             value={form?.arranger}
                             onChange={(e) => setForm({ ...form, arranger: e.target.value })}
@@ -239,14 +239,14 @@ export default function EditTask(
                     </div>
                     {/* date */}
                     <div className="flex flex-row items-center">
-                        <span className="mr-2">Date:</span>
+                        <span className="mr-2 after:content-['*'] after:ml-2 after:mr-2 after:text-red-400">Date:</span>
                         <DatePicker date={form?.date ? new Date(form.date) : undefined} setDate={
                             (date) => setForm({ ...form, date: date ? format(date, 'yyyy-MM-dd') : "" })
                         } />
                     </div>
                     {/* estimatedstartdate */}
                     <div className="flex flex-row items-center">
-                        <span className="mr-2">Estimated Start Date:</span>
+                        <span className="mr-2 after:content-['*'] after:ml-2 after:mr-2 after:text-red-400">Estimated Start Date:</span>
                         <DatePicker date={form?.estimatedStartDate ? new Date(form.estimatedStartDate) : undefined} setDate={
                             (date) => setForm({ ...form, estimatedStartDate: date ? format(date, 'yyyy-MM-dd') : "" })
                         }
@@ -262,7 +262,7 @@ export default function EditTask(
                     </div>
                     {/* estimatedenddate */}
                     <div className="flex flex-row items-center">
-                        <span className="mr-2">Estimated End Date:</span>
+                        <span className="mr-2 after:content-['*'] after:ml-2 after:mr-2 after:text-red-400">Estimated End Date:</span>
                         <DatePicker date={form?.estimatedEndDate ? new Date(form.estimatedEndDate) : undefined} setDate={
 
                             (date) => setForm({ ...form, estimatedEndDate: date ? format(date, 'yyyy-MM-dd') : "" })
@@ -279,7 +279,7 @@ export default function EditTask(
                     </div>
                     {/* estimatedworkinghours */}
                     <div className="flex flex-row items-center">
-                        <span className="mr-2">Estimated Working Hours:</span>
+                        <span className="mr-2 after:content-['*'] after:ml-2 after:mr-2 after:text-red-400">Estimated Working Hours:</span>
                         <Input type="number"
                             value={form?.estimatedWorkingHours}
                             onChange={(e) => setForm({ ...form, estimatedWorkingHours: Number(e.target.value) })}
@@ -295,7 +295,7 @@ export default function EditTask(
                     </div>
                     {/* status */}
                     <div className="flex flex-row items-center">
-                        <span className="mr-2">Status:</span>
+                        <span className="mr-2 after:content-['*'] after:ml-2 after:mr-2 after:text-red-400">Status:</span>
                         <Select value={
                             statusOptions.find((status) => status.value === form?.status)?.label
                         } onValueChange={(value) => setForm({ ...form, status: value })}>
@@ -323,7 +323,7 @@ export default function EditTask(
 
                     {/* level */}
                     <div className="flex flex-row items-center">
-                        <span className="mr-2">Level:</span>
+                        <span className="mr-2 after:content-['*'] after:ml-2 after:mr-2 after:text-red-400">Level:</span>
                         <Select value={
                             form.level?.toString()
                         }
@@ -355,7 +355,7 @@ export default function EditTask(
 
                     {/* progress */}
                     <div className="flex flex-row items-center">
-                        <span className="mr-2">Progress:</span>
+                        <span className="mr-2 after:content-['*'] after:ml-2 after:mr-2 after:text-red-400">Progress:</span>
                         <div className=" w-full flex flex-row items-center mx-6">
                             <Slider value={[form?.progress]} onValueChange={(value) => setForm({ ...form, progress: value[0] })} max={100} step={1} />
                             {

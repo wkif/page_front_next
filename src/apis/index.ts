@@ -13,7 +13,9 @@ import {
   deleteLink,
   deleteCategory,
   addCategory,
-  addLink
+  addLink,
+  getLinkById,
+  editLink
 } from "./link";
 
 import {
@@ -50,6 +52,8 @@ export const apis = {
   deleteCategory,
   addCategory,
   addLink,
+  getLinkById,
+  editLink,
   getTaskList,
   getTaskById,
   addTask,

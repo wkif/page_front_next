@@ -2,7 +2,7 @@
 
 import useStore from "@/store/usestore";
 import Image from "next/image";
-import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
+import { MagnifyingGlassIcon, GitHubLogoIcon } from "@radix-ui/react-icons";
 import {
     Popover,
     PopoverContent,
@@ -31,9 +31,10 @@ import { apis } from "@/apis";
 import { CategoryType, LinkType } from "@/type";
 import { toast } from "sonner";
 import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator } from "../ui/command";
+import { Separator } from "../ui/separator";
 
 
-export function CommandMenu(
+function CommandMenu(
     {
         links
     }: {
@@ -53,7 +54,11 @@ export function CommandMenu(
         document.addEventListener("keydown", down)
         return () => document.removeEventListener("keydown", down)
     }, [])
-
+    const filter = (e: string) => {
+        const link = links.filter((item) => item.title.includes(e));
+        console.log('link', link)
+        setSearchValList(link)
+    }
     return (
         <CommandDialog open={open} onOpenChange={setOpen}>
             <CommandInput placeholder="Type a command or search..." onValueChange={(e) => {
@@ -61,7 +66,7 @@ export function CommandMenu(
                     setSearchValList([])
                     return
                 }
-                setSearchValList(links.filter((item) => item.title.includes(e)))
+                filter(e)
             }} />
             <CommandList>
                 <CommandEmpty>No results found.</CommandEmpty>
@@ -106,12 +111,14 @@ export default function NavMain() {
 
     const [categoryList, setCategoryList] = useState<Array<CategoryType>>();
     const [links, setLinks] = useState<Array<LinkType>>();
+    const [defaultTab, setDefaultTab] = useState('');
 
     const getLinks = async () => {
         const { code, data, msg } = await apis.getLinks({ id: useStore.getState().userInfo.id });
         if (code === 200) {
             setLinks(data?.links);
             setCategoryList(data?.categoryList);
+            setDefaultTab(data?.categoryList[0]?.typename);
         } else {
             toast(msg)
         }
@@ -150,7 +157,7 @@ export default function NavMain() {
 
     return (
         <div className="w-full h-screen p-6  flex flex-col items-center justify-start">
-            <div className="w-full flex flex-row items-center justify-center">
+            <div className="w-full flex flex-row items-center justify-center h-10">
                 <div className="mr-4">
                     <Popover>
                         <PopoverTrigger>
@@ -196,15 +203,18 @@ export default function NavMain() {
                 : ''
             }
             <div className="w-full mt-6">
-                <Tabs defaultValue="account">
-                    <TabsList className="w-full bg-transparent">
+                <Tabs defaultValue='home'>
+                    <TabsList className="w-full bg-transparent h-10">
+                        <TabsTrigger value='home'>Home</TabsTrigger>
                         {
                             categoryList?.map((item) => {
                                 return <TabsTrigger key={item.id} value={item.typename}>{item.typename}</TabsTrigger>
                             })
                         }
                     </TabsList>
-                    <div className="w-full h-full flex flex-row items-center justify-start flex-wrap">
+                    <Separator className="my-2" />
+                    <div className="w-full h-full max-h-[calc(100vh-180px)] overflow-auto flex flex-row items-center justify-start flex-wrap">
+                        <TabsContent className="m-3 w-1/6" value="home">home</TabsContent>
                         {
                             links?.map((item) => {
                                 return <TabsContent className="m-3 w-1/6" key={item.id} value={item.category.typename}>
@@ -215,14 +225,20 @@ export default function NavMain() {
                                             </CardTitle>
                                             <CardDescription className="text-ellipsis text-nowrap text-xs">{item.description}</CardDescription>
                                         </CardHeader>
-                                        <CardFooter>
-                                            <p>
+                                        <CardFooter className="flex flex-col items-center justify-start">
+                                            <div className="flex flex-row items-center justify-start h-8"> <p>
                                                 {
                                                     item.tags ? item.tags.split(",").map((tag) => {
                                                         return <Badge key={tag} variant="secondary">{tag}</Badge>
                                                     }) : ''
                                                 }
-                                            </p>
+                                            </p></div>
+                                            <Separator className="my-2" />
+                                            <div className="flex flex-row items-center justify-start h-8">
+                                                {
+                                                    item.github ? <GitHubLogoIcon className="cursor-pointer w-5 h-5" onClick={() => window.open(item.github, "_blank")} /> : ''
+                                                }
+                                            </div>
                                         </CardFooter>
                                     </Card>
 
@@ -232,10 +248,10 @@ export default function NavMain() {
                     </div>
                 </Tabs>
             </div>
-            {
-                links &&  <CommandMenu links={links} />
-            }
-           
+            {/* {
+                links && <CommandMenu links={links} />
+            } */}
+
         </div>
     )
 }
