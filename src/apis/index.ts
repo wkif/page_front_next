@@ -3,7 +3,8 @@ import {
   Login,
   register,
   getUserInfo,
-  updateUserInfo
+  updateUserInfo,
+  updateNewsTypes
 } from "./user";
 import {
   getLinks,
@@ -15,7 +16,8 @@ import {
   addCategory,
   addLink,
   getLinkById,
-  editLink
+  editLink,
+  getNewsApi
 } from "./link";
 
 import {
@@ -44,6 +46,7 @@ export const apis = {
   register,
   getUserInfo,
   updateUserInfo,
+  updateNewsTypes,
   getLinks,
   searchAdvice,
   getLinkTableList,
@@ -70,5 +73,6 @@ export const apis = {
   getLunarDate,
   getEstimateTaskByMonth,
   getActualTaskByMonth,
-  getHoildayByMonth
+  getHoildayByMonth,
+  getNewsApi
 };

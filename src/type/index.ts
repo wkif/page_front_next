@@ -18,6 +18,7 @@ interface UserinfoType {
     emailReceiver: string
     dailyTemplate: string
     monthlyTemplate: string
+    newsTypes: string
 }
 
 interface CategoryType {

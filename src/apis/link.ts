@@ -78,3 +78,9 @@ export const deleteCategory = (data: {
 }) => {
   return postAxios({ url: "/links/deleteCategory", data })
 }
+
+export const getNewsApi = (params: {
+  type:string
+}) => {
+  return getAxios({ url: `/getNewsApi/${params.type}` });
+}

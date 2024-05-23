@@ -11,6 +11,7 @@ let store = (set: any, get: any) => ({
         username: string
         avatar: string
         email: string
+        newsTypes: string
     },
     setUserInfo: (data: any) => set((state: any) => ({ userInfo: data })),
     // 侧边栏是否展开

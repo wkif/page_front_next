@@ -130,10 +130,10 @@ export default function MonthDayComp({
                         return dayItem.day == day
                     })?.status == 0 || holidayData?.find((dayItem) => {
                         return dayItem.day == day
-                    })?.status == 2 ? <Badge className="bg-[#dbe2ef] ml-auto" variant="outline">Work</Badge> : ""
+                    })?.status == 2 ? <Badge className="bg-[#dbe2ef] ml-auto dark:bg-[#aa96da]" variant="outline">Work</Badge> : ""
                 }
             </div>
-            <div className="">
+            <div>
                 <TaskTitle taskList={TaskLIst_estimate} day={day} type={1} getTaskByMonth={getTaskByMonth} />
                 <TaskTitle taskList={TaskLIst_actual} day={day} type={2} getTaskByMonth={getTaskByMonth} />
             </div>

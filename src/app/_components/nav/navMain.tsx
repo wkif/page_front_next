@@ -30,9 +30,10 @@ import Link from "next/link";
 import { apis } from "@/apis";
 import { CategoryType, LinkType } from "@/type";
 import { toast } from "sonner";
-import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator } from "../ui/command";
-import { Separator } from "../ui/separator";
+import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator } from "../../../components/ui/command";
+import { Separator } from "../../../components/ui/separator";
 
+import News from "./news"
 
 function CommandMenu(
     {
@@ -214,7 +215,9 @@ export default function NavMain() {
                     </TabsList>
                     <Separator className="my-2" />
                     <div className="w-full h-full max-h-[calc(100vh-180px)] overflow-auto flex flex-row items-center justify-start flex-wrap">
-                        <TabsContent className="m-3 w-1/6" value="home">home</TabsContent>
+                        <TabsContent className="m-3 w-full" value="home">
+                            <News />
+                        </TabsContent>
                         {
                             links?.map((item) => {
                                 return <TabsContent className="m-3 w-1/6" key={item.id} value={item.category.typename}>

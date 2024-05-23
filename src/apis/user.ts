@@ -43,3 +43,9 @@ export const updateUserInfo = (data: {
 }) => {
   return postAxios({ url: "/user/updateUserInfo", data })
 }
+export const updateNewsTypes = (data: {
+  id: number;
+  newsTypes: string;
+}) => {
+  return postAxios({ url: "/user/updateNewsTypes", data })
+}
