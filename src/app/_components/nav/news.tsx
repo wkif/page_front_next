@@ -44,6 +44,10 @@ export default function News() {
         setTypeList(newList)
     }
     const submit = async () => {
+        if (!useStore.getState().userInfo?.id) {
+            setSetting(false)
+            return
+        }
         const list = typeList
         const newsTypeList = list
             .filter((item) => item.check)
@@ -64,7 +68,8 @@ export default function News() {
 
     }
     useEffect(() => {
-        const newsTypeList = useStore.getState().userInfo.newsTypes.split(",");
+        const newsTypes = useStore.getState().userInfo.newsTypes ? useStore.getState().userInfo.newsTypes : 'bilibili,weibo,zhihu,douyin,sspai,36kr,ithome,juejin,toutiao,douban-movie'
+        const newsTypeList = newsTypes.split(",")
         const list = typeList;
         newsTypeList.forEach((item) => {
             list.find((type) => {
