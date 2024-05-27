@@ -57,7 +57,6 @@ function CommandMenu(
     }, [])
     const filter = (e: string) => {
         const link = links.filter((item) => item.title.includes(e));
-        console.log('link', link)
         setSearchValList(link)
     }
     return (
@@ -105,7 +104,6 @@ export default function NavMain() {
     const [answer, setAnswer] = useState('');
     const search = () => {
         if (!answer) return;
-        console.log('answer', answer)
         addSearchHistory(answer);
         searchEngine && window.open(searchEngine.link + answer, "_blank");
     }

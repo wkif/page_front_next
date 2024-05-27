@@ -34,7 +34,6 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                 router.push('/login')
             }, 2000)
         } else {
-            console.log(msg)
             toast(msg)
         }
     }

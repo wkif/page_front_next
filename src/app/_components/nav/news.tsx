@@ -162,7 +162,6 @@ function NewList(
             setData(res)
         } else {
         }
-        console.log('data',res)
 
     }
 
