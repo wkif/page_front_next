@@ -1,4 +1,5 @@
 import { GearIcon } from "@radix-ui/react-icons"
+import axios from "axios"
 
 import {
     Dialog,
@@ -161,6 +162,8 @@ function NewList(
             setData(res)
         } else {
         }
+        console.log('data',res)
+
     }
 
     useEffect(() => {

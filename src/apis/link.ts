@@ -82,5 +82,7 @@ export const deleteCategory = (data: {
 export const getNewsApi = (params: {
   type:string
 }) => {
+  // return getAxios({ url: `/hot-api/${params.type}` });
   return getAxios({ url: `/getNewsApi/${params.type}` });
+
 }
