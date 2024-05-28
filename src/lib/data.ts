@@ -138,7 +138,7 @@ const typeData = [
     }
 ]
 
-const GPTlink = 'https://nextchatweb-kif.vercel.app'
+const GPTlink = 'https://gpt.kifroom.icu'
 
 export {
     searchEngineList,

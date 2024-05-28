@@ -219,7 +219,7 @@ export default function NavMain() {
                         <TabsContent className="m-3 w-full" value="home">
                             home
                         </TabsContent>
-                        <TabsContent className="m-3 w-full px-[146px] h-[calc(100vh-250px)]" value="gpt">
+                        <TabsContent className="m-3 w-full px-[16px] h-[calc(100vh-250px)]" value="gpt">
                             <iframe src={GPTlink} style={{ width: '100%', height: '100%' }}></iframe>
                         </TabsContent>
                         <TabsContent className="m-3 w-full" value="news">
