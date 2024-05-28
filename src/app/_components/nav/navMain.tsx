@@ -23,7 +23,7 @@ import { Badge } from "@/components/ui/badge"
 
 
 
-import { searchEngineList } from "@/lib/data";
+import { GPTlink, searchEngineList } from "@/lib/data";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
@@ -34,6 +34,7 @@ import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, C
 import { Separator } from "../../../components/ui/separator";
 
 import News from "./news"
+import Gpt from "../tool/gpt";
 
 function CommandMenu(
     {
@@ -202,9 +203,11 @@ export default function NavMain() {
                 : ''
             }
             <div className="w-full mt-6">
-                <Tabs defaultValue='home'>
+                <Tabs defaultValue='news'>
                     <TabsList className="w-full bg-transparent h-10">
-                        <TabsTrigger value='home'>Home</TabsTrigger>
+                        {/* <TabsTrigger value='home'>Home</TabsTrigger> */}
+                        <TabsTrigger value='gpt'>GPT</TabsTrigger>
+                        <TabsTrigger value='news'>News</TabsTrigger>
                         {
                             categoryList?.map((item) => {
                                 return <TabsTrigger key={item.id} value={item.typename}>{item.typename}</TabsTrigger>
@@ -214,8 +217,15 @@ export default function NavMain() {
                     <Separator className="my-2" />
                     <div className="w-full h-full max-h-[calc(100vh-180px)] overflow-auto flex flex-row items-center justify-start flex-wrap">
                         <TabsContent className="m-3 w-full" value="home">
+                            home
+                        </TabsContent>
+                        <TabsContent className="m-3 w-full px-[146px] h-[calc(100vh-250px)]" value="gpt">
+                            <iframe src={GPTlink} style={{ width: '100%', height: '100%' }}></iframe>
+                        </TabsContent>
+                        <TabsContent className="m-3 w-full" value="news">
                             <News />
                         </TabsContent>
+
                         {
                             links?.map((item) => {
                                 return <TabsContent className="m-3 w-1/6" key={item.id} value={item.category.typename}>
@@ -252,7 +262,6 @@ export default function NavMain() {
             {/* {
                 links && <CommandMenu links={links} />
             } */}
-
         </div>
     )
 }

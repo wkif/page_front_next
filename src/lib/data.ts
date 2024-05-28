@@ -65,7 +65,6 @@ const TaskLevel = [
         label: "High"
     }
 ]
-const now = new Date()
 const typeData = [
     {
         id: 2,
@@ -139,9 +138,12 @@ const typeData = [
     }
 ]
 
+const GPTlink = 'https://nextchatweb-kif.vercel.app'
+
 export {
     searchEngineList,
     statusOptions,
     TaskLevel,
-    typeData
+    typeData,
+    GPTlink
 }

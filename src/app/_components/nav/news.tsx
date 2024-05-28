@@ -24,6 +24,7 @@ import { typeData } from "@/lib/data"
 import Image from "next/image"
 import Link from "next/link";
 import { UpdateIcon } from "@radix-ui/react-icons"
+import Loading from "@/components/loading"
 export default function News() {
     const [setting, setSetting] = useState(false)
     const [typeList, setTypeList] = useState<Array<{
@@ -155,9 +156,12 @@ function NewList(
         total: number
         updateTime: string
     }
-    const [data, setData] = useState<NewResType>()
+    const [data, setData] = useState<NewResType>();
+    const [loading, setLoading] = useState(false)
     const getData = async () => {
+        setLoading(true)
         const res = await apis.getNewsApi({ type }) as unknown as NewResType
+        setLoading(false)
         if (res.code === 200) {
             setData(res)
         } else {
@@ -193,34 +197,39 @@ function NewList(
         return <></>
     }
     return <>
+        {loading && <div className="w-1/6 h-[350px] border m-1 p-4 rounded-lg dark:bg-zinc-800 dark:border-zinc-700 bg-white hover:shadow-lg">
+            <Loading loading={loading} />
+        </div>}
 
-
-        <div className="w-1/6 h-[350px] border m-1 p-4 rounded-lg dark:bg-zinc-800 dark:border-zinc-700 bg-white hover:shadow-lg">
-            <div className="flex flex-row items-center justify-between h-[30px]">
-                <div className="flex flex-row items-center">
-                    <Image src={img} className="w-5 h-5 mr-3" alt={data.title} />
-                    <span className="text-sm">{data.title}</span>
+        {
+            !loading && data &&
+            <div className="w-1/6 h-[350px] border m-1 p-4 rounded-lg dark:bg-zinc-800 dark:border-zinc-700 bg-white hover:shadow-lg">
+                <div className="flex flex-row items-center justify-between h-[30px]">
+                    <div className="flex flex-row items-center">
+                        <Image src={img} className="w-5 h-5 mr-3" alt={data.title} />
+                        <span className="text-sm">{data.title}</span>
+                    </div>
+                    <span className="text-xs">{data.type}</span>
                 </div>
-                <span className="text-xs">{data.type}</span>
+                <div className="mt-4 h-[240px] overflow-auto">
+                    {
+                        data.data.map((item, index) => {
+                            return <>
+                                <Link href={item.url} target="_blank">
+                                    <div className="p-2 flex items-center  text-xs text-gray-500 ">
+                                        <div className="w-2 h-2 mr-3">{index + 1}</div>
+                                        <span className="truncate">{item.title}</span>
+                                    </div>
+                                </Link>
+                            </>
+                        })
+                    }
+                </div>
+                <div className="h-[30px] pt-2 flex justify-between items-center">
+                    <span className="text-xs text-gray-500">{getTime(data.updateTime)}更新</span>
+                    <UpdateIcon className="w-4 h-4 text-gray-500 cursor-pointer" onClick={() => getData()} />
+                </div>
             </div>
-            <div className="mt-4 h-[240px] overflow-auto">
-                {
-                    data.data.map((item, index) => {
-                        return <>
-                            <Link href={item.url} target="_blank">
-                                <div className="p-2 flex items-center  text-xs text-gray-500 ">
-                                    <div className="w-2 h-2 mr-3">{index + 1}</div>
-                                    <span className="truncate">{item.title}</span>
-                                </div>
-                            </Link>
-                        </>
-                    })
-                }
-            </div>
-            <div className="h-[30px] pt-2 flex justify-between items-center">
-                <span className="text-xs text-gray-500">{getTime(data.updateTime)}更新</span>
-                <UpdateIcon className="w-4 h-4 text-gray-500 cursor-pointer" onClick={() => getData()} />
-            </div>
-        </div>
+        }
     </>
 }
