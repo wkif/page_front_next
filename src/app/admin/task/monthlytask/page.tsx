@@ -28,7 +28,7 @@ import {
 
 import AddDialogComp from "./_components/addDialogComp"
 import UploadDialogComp from "./_components/uploadDialog"
-
+import DownloadDialogComp from "../_components/downloadDialog"
 
 
 export default function MonthlyTaskPage() {
@@ -88,7 +88,8 @@ export default function MonthlyTaskPage() {
             userId: useStore.getState().userInfo?.id
         })
         if (res.code==200) {
-            window.open(res.data.url)
+            setLink(res.data.url)
+            setDownloadOpen(true)
         } else {
             toast('Download failed')
         }
@@ -100,13 +101,15 @@ export default function MonthlyTaskPage() {
             type: 2
         })
         if (res.code==200) {
-            window.open(res.data.url)
+            setLink(res.data.url)
+            setDownloadOpen(true)
         } else {
             toast('Download failed')
         }
     }
     const [upload, setUpload] = useState(false)
-
+    const [downloadOpen, setDownloadOpen] = useState(false)
+    const [link, setLink] = useState('')
     return (
         <div className="space-y-6">
             <div className="flex flex-row justify-between">
@@ -247,6 +250,7 @@ export default function MonthlyTaskPage() {
                     </TableBody>
                 </Table>
                 <KifPagination currentPage={page} total={total} changePage={getList} />
+                <DownloadDialogComp open={downloadOpen} link={link} setOpen={setDownloadOpen} getList={getList} />
                 <AddDialogComp open={open} setOpen={setOpen} getList={getList} />
                 <UploadDialogComp open={upload} setOpen={setUpload} />
             </>

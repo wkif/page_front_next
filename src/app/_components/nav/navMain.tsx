@@ -106,6 +106,7 @@ export default function NavMain() {
     const search = () => {
         if (!answer) return;
         addSearchHistory(answer);
+        setSearchList([])
         searchEngine && window.open(searchEngine.link + answer, "_blank");
     }
 
@@ -147,6 +148,7 @@ export default function NavMain() {
     const sel = (val: string) => {
         setAnswer(val);
         addSearchHistory(val);
+        setSearchList([])
         searchEngine && window.open(searchEngine.link + val, "_blank");
     }
 
