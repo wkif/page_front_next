@@ -38,6 +38,7 @@ export const updateUserInfo = (data: {
   emailPort: string;
   emailAuth: string;
   emailReceiver: string;
+  emailCC: string;
   dailyTemplateName: string;
   monthlyTemplateName: string;
 }) => {

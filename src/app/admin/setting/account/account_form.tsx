@@ -22,6 +22,7 @@ export default function AccountForm(
         emailPort: string;
         emailAuth: string;
         emailReceiver: string;
+        emailCC: string;
         dailyTemplateName: string;
         monthlyTemplateName: string;
     }>(
@@ -33,6 +34,7 @@ export default function AccountForm(
             emailPort: "",
             emailAuth: "",
             emailReceiver: "",
+            emailCC: "",
             dailyTemplateName: "",
             monthlyTemplateName: "",
         }
@@ -76,6 +78,9 @@ export default function AccountForm(
                 emailReceiver: z.string().min(2, {
                     message: "Email receiver must be at least 2 characters.",
                 }),
+                emailCC: z.string().min(2, {
+                    message: "Email CC must be at least 2 characters.",
+                }),
                 dailyTemplateName: z.string().min(2, {
                     message: "Daily template name must be at least 2 characters.",
                 }),
@@ -92,6 +97,7 @@ export default function AccountForm(
                 emailAuth: userData?.emailAuth,
                 emailSend: userData?.emailSend,
                 emailReceiver: userData?.emailReceiver,
+                emailCC: userData?.emailCC,
                 dailyTemplateName: userData?.dailyTemplateName,
                 monthlyTemplateName: userData?.monthlyTemplateName
             });
@@ -115,6 +121,7 @@ export default function AccountForm(
                         emailAuth: userData.emailAuth,
                         emailSend: userData.emailSend,
                         emailReceiver: userData.emailReceiver,
+                        emailCC: userData.emailCC,
                         dailyTemplateName: userData.dailyTemplateName,
                         monthlyTemplateName: userData.monthlyTemplateName
                     }
@@ -234,6 +241,20 @@ export default function AccountForm(
                     onChange={(e) => setUserData({ ...userData, emailReceiver: e.target.value })} autoComplete="off" required />
                 <div className="mt-1 text-xs text-red-500">
                     {errors.find((error) => error.for === "emailReceiver")?.message}
+                </div>
+            </div>
+            {/* emailCC */}
+            <div>
+                <label
+                    className="mb-3 text-sm font-medium text-black dark:text-white flex flex-col"
+                >
+                    <div>Email CC</div>
+                    <span className="text-xs text-gray-500 mt-1">Comma separated list of recipients email addresses that will appear on the Cc: field</span>
+                </label>
+                <Textarea value={userData?.emailCC}
+                    onChange={(e) => setUserData({ ...userData, emailCC: e.target.value })} autoComplete="off" required />
+                <div className="mt-1 text-xs text-red-500">
+                    {errors.find((error) => error.for === "emailCC")?.message}
                 </div>
             </div>
             {/* dailyTemplateName */}
