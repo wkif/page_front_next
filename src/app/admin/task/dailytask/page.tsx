@@ -29,6 +29,7 @@ import {
 
 import AddDialogComp from "./_components/addDialogComp"
 import UploadDialogComp from "./_components/uploadDialog"
+import DownloadDialogComp from "../_components/downloadDialog"
 
 export default function DailyTaskPage() {
     const [page, setPage] = useState(1)
@@ -70,7 +71,7 @@ export default function DailyTaskPage() {
     const [open, setOpen] = useState(false)
     const deleteHistoryFile = async (id: number) => {
         const { code, data, msg } = await apis.deleteHistoryFile({
-            hisId:id,
+            hisId: id,
             userId: useStore.getState().userInfo?.id
         })
         if (code === 200) {
@@ -81,12 +82,13 @@ export default function DailyTaskPage() {
         }
     }
     const downloadHistoryFile = async (id: number, name: string) => {
-        const {code,data,msg} = await apis.downloadHistoryFile({
+        const { code, data, msg } = await apis.downloadHistoryFile({
             hisId: id,
             userId: useStore.getState().userInfo?.id
         })
-        if (code==200) {
-            window.open(data.url)
+        if (code == 200) {
+            setLink(data.url)
+            setDownloadOpen(true)
         } else {
             toast('Download failed')
         }
@@ -104,17 +106,20 @@ export default function DailyTaskPage() {
         }
     }
     const downloadTemplate = async () => {
-        const {code,data,msg} = await apis.downloadTemplate({
+        const { code, data, msg } = await apis.downloadTemplate({
             userId: useStore.getState().userInfo?.id,
             type: 1
         })
-        if (code==200) {
-           window.open(data.url)
+        if (code == 200) {
+            setLink(data.url)
+            setDownloadOpen(true)
         } else {
-            toast('Download failed:'+msg)
+            toast('Download failed:' + msg)
         }
     }
     const [upload, setUpload] = useState(false)
+    const [downloadOpen, setDownloadOpen] = useState(false)
+    const [link, setLink] = useState('')
 
     return (
         <div className="space-y-6">
@@ -303,6 +308,7 @@ export default function DailyTaskPage() {
                 </Table>
                 <KifPagination currentPage={page} total={total} changePage={getList} />
                 <AddDialogComp open={open} setOpen={setOpen} getList={getList} />
+                <DownloadDialogComp open={downloadOpen} link={link} setOpen={setDownloadOpen} getList={getList} />
                 <UploadDialogComp open={upload} setOpen={setUpload} />
             </>
         </div>

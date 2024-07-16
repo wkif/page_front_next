@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const isProd = ["production"].includes(process.env.NODE_ENV);
-console.log("isProd", isProd);
+console.log("isProd", isProd, process.env.NEXT_PUBLIC_BASE_URL);
 const nextConfig = {
     reactStrictMode: true,
     async rewrites() {
