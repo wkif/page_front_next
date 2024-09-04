@@ -272,6 +272,8 @@ export default function TaskPage() {
                             <TableHead>Status</TableHead>
                             {/* level */}
                             <TableHead>Level</TableHead>
+                            {/* actualWorkingHours */}
+                            <TableHead>Actual Working Hours</TableHead>
                             {/* progress */}
                             <TableHead>Progress</TableHead>
                             {/* remarks */}
@@ -335,6 +337,7 @@ export default function TaskPage() {
                                             getLevelIcon(task.level)
                                         } <span className="ml-2">{TaskLevel.find((item) => item.value === task.level)?.label} </span></div>
                                 </TableCell>
+                                <TableCell className="font-medium">{task.actualWorkingHours} h</TableCell>
                                 <TableCell className="font-medium">{task.progress} %</TableCell>
                                 <TableCell className="font-medium">
                                     <TooltipProvider>

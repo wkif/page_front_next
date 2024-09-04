@@ -241,7 +241,16 @@ export default function EditTask(
                     <div className="flex flex-row items-center">
                         <span className="mr-2 after:content-['*'] after:ml-2 after:mr-2 after:text-red-400">Date:</span>
                         <DatePicker date={form?.date ? new Date(form.date) : undefined} setDate={
-                            (date) => setForm({ ...form, date: date ? format(date, 'yyyy-MM-dd') : "" })
+                            (date) => {
+                                setForm({
+                                    ...form,
+                                    date: date ? format(date, 'yyyy-MM-dd') : "",
+                                    estimatedStartDate: date ? format(date, 'yyyy-MM-dd') : "",
+                                    estimatedEndDate: date ? format(date, 'yyyy-MM-dd') : "",
+                                    actualStartDate: date ? format(date, 'yyyy-MM-dd') : "",
+                                    actualEndDate: date ? format(date, 'yyyy-MM-dd') : "",
+                                });
+                            }
                         } />
                     </div>
                     {/* estimatedstartdate */}
@@ -282,7 +291,7 @@ export default function EditTask(
                         <span className="mr-2 after:content-['*'] after:ml-2 after:mr-2 after:text-red-400">Estimated Working Hours:</span>
                         <Input type="number"
                             value={form?.estimatedWorkingHours}
-                            onChange={(e) => setForm({ ...form, estimatedWorkingHours: Number(e.target.value) })}
+                            onChange={(e) => setForm({ ...form, estimatedWorkingHours: Number(e.target.value), actualWorkingHours: Number(e.target.value) })}
                             placeholder="estimated working hours" />
                     </div>
                     {/* actualworkinghours */}
