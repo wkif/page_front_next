@@ -20,6 +20,8 @@ import {
 import useStore from '@/store/usestore'
 import DarkMode from "../../../components/darkMode";
 import { searchEngineList } from "@/lib/data";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { cn } from "@/lib/utils";
 
 
 export default function NavAside() {
@@ -33,56 +35,113 @@ export default function NavAside() {
         searchEngine = searchEngineList[0];
     }
     return (
-        <div className={
-            isCollapse ?
-                "flex flex-col items-center justify-start h-screen border-r px-6 py-10 w-1/12"
-                :
-                "flex flex-col items-center justify-start h-screen border-r px-6 py-10 w-2/12"
-        }>
-            <div className="cursor-pointer absolute top-4">
-                {
-                    !isCollapse ? <DoubleArrowLeftIcon onClick={() => setIsCollapse(!isCollapse)} /> : <DoubleArrowRightIcon onClick={() => setIsCollapse(!isCollapse)} />}
-            </div>
-            <div className="border-b pb-4">
-                <Image src={LogoImg} alt="kifnav Logo" />
-            </div>
-            {
-                loginState ?
-                    <div className="w-full flex flex-row items-center justify-evenly mt-6">
-                        <div>
-                            <Link href={`/admin/setting/account`}>
-                                <Avatar>
-                                    <AvatarImage src={userInfo?.avatar} />
-                                    <AvatarFallback>kif</AvatarFallback>
-                                </Avatar>
-                            </Link>
-                        </div>
-                        {
-                            !isCollapse ?
-                                <span>{userInfo.username}</span> : ''
-                        }
-                    </div>
-                    :
-                    <div className="mt-5">
-                        <Link href="/login">
-                            <Button variant="ghost">Login</Button>
-                        </Link>
-                    </div>
-            }
-            {
-                searchHistory.length > 0 && !isCollapse &&
-                <div className="h-full w-full rounded-md m-4 p-3"
+        <div className={cn(
+            "flex flex-col items-center h-screen border-r dark:border-gray-800 py-4 transition-all duration-300 ease-in-out relative",
+            isCollapse ? "w-16" : "w-64"
+        )}>
+            {/* 折叠/展开按钮 */}
+            <div className="absolute -right-3 top-8 z-10">
+                <Button 
+                    variant="outline" 
+                    size="icon" 
+                    className="rounded-full h-6 w-6 p-0 shadow-md bg-background border-gray-200 dark:border-gray-700"
+                    onClick={() => setIsCollapse(!isCollapse)}
                 >
-                    <div className="flex flex-row items-center justify-between text-sm text-gray-500">
-                        <div className="flex flex-row items-center justify-start"><TextAlignLeftIcon /> History</div>
+                    {!isCollapse ? 
+                        <DoubleArrowLeftIcon className="h-3 w-3" /> : 
+                        <DoubleArrowRightIcon className="h-3 w-3" />
+                    }
+                </Button>
+            </div>
+            
+            {/* Logo区域 */}
+            <div className={cn(
+                "flex justify-center items-center py-4 w-full",
+                isCollapse ? "px-2" : "px-6"
+            )}>
+                <Image 
+                    src={LogoImg} 
+                    alt="kifnav Logo" 
+                    className={cn(
+                        "transition-all duration-300",
+                        isCollapse ? "max-w-[32px]" : ""
+                    )}
+                />
+            </div>
+            
+            <div className="w-full h-px bg-gray-100 dark:bg-gray-800 my-2"></div>
+            
+            {/* 用户信息/登录区域 */}
+            {loginState ? (
+                <div className={cn(
+                    "w-full flex items-center py-4",
+                    isCollapse ? "justify-center" : "px-6 justify-start space-x-3"
+                )}>
+                    <Link href={`/admin/setting/account`}>
+                        <Avatar className="transition-transform hover:scale-105 border-2 border-transparent hover:border-primary">
+                            <AvatarImage src={userInfo?.avatar} />
+                            <AvatarFallback className="bg-primary/10 text-primary">
+                                {userInfo.username?.substring(0, 2) || "KF"}
+                            </AvatarFallback>
+                        </Avatar>
+                    </Link>
+                    
+                    {!isCollapse && (
+                        <div className="flex flex-col">
+                            <span className="font-medium text-sm">{userInfo.username}</span>
+                            <span className="text-xs text-muted-foreground">用户</span>
+                        </div>
+                    )}
+                </div>
+            ) : (
+                <div className={cn(
+                    "w-full py-4",
+                    isCollapse ? "flex justify-center" : "px-6"
+                )}>
+                    <Link href="/login" className={isCollapse ? "" : "w-full"}>
+                        <Button 
+                            variant="outline" 
+                            className={cn(
+                                "transition-all",
+                                isCollapse ? "w-10 h-10 p-0" : "w-full"
+                            )}
+                        >
+                            {isCollapse ? (
+                                <TooltipProvider>
+                                    <Tooltip>
+                                        <TooltipTrigger asChild>
+                                            <span>登</span>
+                                        </TooltipTrigger>
+                                        <TooltipContent side="right">
+                                            <p>登录</p>
+                                        </TooltipContent>
+                                    </Tooltip>
+                                </TooltipProvider>
+                            ) : "登录"}
+                        </Button>
+                    </Link>
+                </div>
+            )}
+            
+            {/* 搜索历史区域 */}
+            {searchHistory.length > 0 && !isCollapse && (
+                <div className="flex-1 w-full px-4 py-3 overflow-hidden">
+                    <div className="flex items-center justify-between text-sm text-muted-foreground mb-3">
+                        <div className="flex items-center space-x-2">
+                            <TextAlignLeftIcon className="h-4 w-4" /> 
+                            <span>搜索历史</span>
+                        </div>
                         <AlertDialog>
                             <AlertDialogTrigger asChild>
-                                <Cross2Icon className="cursor-pointer" />
+                                <Button variant="ghost" size="icon" className="h-6 w-6 rounded-full p-0 hover:bg-muted">
+                                    <Cross2Icon className="h-3.5 w-3.5" />
+                                </Button>
                             </AlertDialogTrigger>
                             <AlertDialogContent>
                                 <AlertDialogHeader>
+                                    <AlertDialogTitle>清除历史记录</AlertDialogTitle>
                                     <AlertDialogDescription>
-                                        清除全部历史记录?
+                                        确定要清除全部搜索历史记录吗?
                                     </AlertDialogDescription>
                                 </AlertDialogHeader>
                                 <AlertDialogFooter>
@@ -91,42 +150,73 @@ export default function NavAside() {
                                 </AlertDialogFooter>
                             </AlertDialogContent>
                         </AlertDialog>
-
                     </div>
-                    <div className="flex flex-row items-start justify-start mt-3">
-                        <div className="h-80 w-0.5 mr-1 bg-gray-200"></div>
-                        <div className="h-80 p-1 overflow-auto">
-                            {
-                                searchHistory.map((item: any, index: number) => {
-                                    return (
-                                        <div className="my-2 flex flex-row items-center justify-start text-sm text-gray-500" key={index}>
-                                            <Link className="hover:text-blue-500 hover:bg-slate-100 w-36 p-1 rounded-md overflow-hidden text-ellipsis whitespace-nowrap" href={`${searchEngine?.link}${item}`} >
-                                                {item}
-                                            </Link>
+                    
+                    <div className="relative h-[calc(100%-2rem)] flex space-x-2">
+                        <div className="absolute left-1.5 top-0 h-full w-px bg-gray-200 dark:bg-gray-700"></div>
+                        <div className="pl-5 pr-1 h-full overflow-auto scrollbar-thin">
+                            {searchHistory.map((item: string, index: number) => (
+                                <Link 
+                                    key={index}
+                                    href={`${searchEngine?.link}${item}`}
+                                    target="_blank"
+                                    className="block mb-2.5 group"
+                                >
+                                    <div className="relative pl-2">
+                                        <div className="absolute -left-5 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-gray-300 dark:bg-gray-600 group-hover:bg-primary"></div>
+                                        <div className="py-1.5 px-2 text-sm truncate hover:text-primary transition-colors rounded-md hover:bg-muted group-hover:font-medium">
+                                            {item}
                                         </div>
-                                    )
-                                })
-                            }
+                                    </div>
+                                </Link>
+                            ))}
                         </div>
                     </div>
-
                 </div>
-            }
-
-            <div className={
-                isCollapse
-                    ?
-                    "w-1/12 absolute bottom-5 border-t pt-4 flex flex-row items-center justify-evenly"
-                    :
-                    "w-2/12 absolute bottom-5 border-t pt-4 flex flex-row items-center justify-evenly"
-            }>
-                {
-                    loginState?<Link href='/admin'><GearIcon className="cursor-pointer" /></Link>:''
-                }
-                {/* <GitHubLogoIcon className="cursor-pointer" /> */}
+            )}
+            
+            {/* 底部工具栏 */}
+            <div className={cn(
+                "w-full border-t dark:border-gray-800 pt-3 pb-4 flex items-center gap-1 mt-auto",
+                isCollapse ? "px-2 justify-center" : "px-4 justify-between"
+            )}>
+                {/* 设置按钮 - 只在展开状态显示 */}
+                {loginState && !isCollapse && (
+                    <TooltipProvider>
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <Link href='/admin'>
+                                    <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full">
+                                        <GearIcon className="h-4 w-4" />
+                                    </Button>
+                                </Link>
+                            </TooltipTrigger>
+                            <TooltipContent side="bottom">
+                                <p>设置</p>
+                            </TooltipContent>
+                        </Tooltip>
+                    </TooltipProvider>
+                )}
+                
+                {/* 夜间模式切换 - 始终显示 */}
                 <DarkMode />
-                <ExitIcon className="cursor-pointer" onClick={logout} />
+                
+                {/* 退出按钮 - 只在展开状态显示 */}
+                {!isCollapse && (
+                    <TooltipProvider>
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full" onClick={logout}>
+                                    <ExitIcon className="h-4 w-4" />
+                                </Button>
+                            </TooltipTrigger>
+                            <TooltipContent side="bottom">
+                                <p>退出</p>
+                            </TooltipContent>
+                        </Tooltip>
+                    </TooltipProvider>
+                )}
             </div>
-        </div >
+        </div>
     )
 }

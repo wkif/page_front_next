@@ -25,6 +25,13 @@ import Image from "next/image"
 import Link from "next/link";
 import { UpdateIcon } from "@radix-ui/react-icons"
 import Loading from "@/components/loading"
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from "@/components/ui/tooltip"
+
 export default function News() {
     const [setting, setSetting] = useState(false)
     const [typeList, setTypeList] = useState<Array<{
@@ -94,7 +101,7 @@ export default function News() {
                         {
                             typeList.map((item) => {
                                 return <>
-                                    <div className="flex justify-between items-center">
+                                    <div className="flex justify-between items-center" key={item.id}>
                                         {item.name}
                                         <Switch
                                             checked={item.check}
@@ -128,7 +135,7 @@ export default function News() {
                         {
                             typeList.map((item) => {
                                 return <>
-                                    {item.check ? <NewList type={item.type} img={item.img} /> : ''}
+                                    {item.check ? <NewList type={item.type} img={item.img} key={item.id} /> : ''}
                                 </>
                             })
                         }
@@ -197,37 +204,54 @@ function NewList(
         return <></>
     }
     return <>
-        {loading && <div className="w-1/6 h-[350px] border m-1 p-4 rounded-lg dark:bg-zinc-800 dark:border-zinc-700 bg-white hover:shadow-lg">
+        {loading && <div className="w-1/6 min-w-[250px] h-[350px] border m-1 p-4 rounded-lg dark:bg-zinc-800/50 dark:border-zinc-700 bg-white shadow-sm animate-pulse">
             <Loading loading={loading} />
         </div>}
 
         {
             !loading && data &&
-            <div className="w-1/6 h-[350px] border m-1 p-4 rounded-lg dark:bg-zinc-800 dark:border-zinc-700 bg-white hover:shadow-lg">
-                <div className="flex flex-row items-center justify-between h-[30px]">
+            <div className="w-1/6 min-w-[250px] h-[350px] border m-1 rounded-lg dark:bg-zinc-800/90 dark:border-zinc-700 bg-white shadow-sm hover:shadow-md transition-all">
+                <div className="flex flex-row items-center justify-between h-[40px] px-4 pt-3 border-b dark:border-zinc-700">
                     <div className="flex flex-row items-center">
-                        <Image src={img} className="w-5 h-5 mr-3" alt={data.title} />
-                        <span className="text-sm">{data.title}</span>
+                        <div className="bg-gray-50 dark:bg-zinc-700 p-1.5 rounded-md mr-2">
+                            <Image src={img} className="w-5 h-5" alt={data.title} />
+                        </div>
+                        <span className="text-sm font-medium">{data.title}</span>
                     </div>
-                    <span className="text-xs">{data.type}</span>
+                    <span className="text-xs px-1.5 py-0.5 bg-gray-100 dark:bg-zinc-700 rounded">{data.type}</span>
                 </div>
-                <div className="mt-4 h-[240px] overflow-auto">
+                <div className="p-2 h-[260px] overflow-auto scrollbar-thin">
                     {
                         data.data.map((item, index) => {
                             return <>
-                                <Link href={item.url} target="_blank">
-                                    <div className="p-2 flex items-center  text-xs text-gray-500 ">
-                                        <div className="w-2 h-2 mr-3">{index + 1}</div>
-                                        <span className="truncate">{item.title}</span>
+                                <Link href={item.url} target="_blank" key={item.id || `news-item-${index}`}>
+                                    <div className="px-3 py-2 my-1 flex items-center text-xs text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-700/50 rounded-md transition-colors group">
+                                        <div className="w-5 h-5 mr-2 flex items-center justify-center bg-gray-100 dark:bg-zinc-700 rounded-full text-[10px] text-gray-500 dark:text-gray-300 font-medium">
+                                            {index + 1}
+                                        </div>
+                                        <TooltipProvider>
+                                            <Tooltip>
+                                                <TooltipTrigger asChild>
+                                                    <span className="truncate group-hover:text-blue-500 transition-colors max-w-full">
+                                                        {item.title}
+                                                    </span>
+                                                </TooltipTrigger>
+                                                <TooltipContent>
+                                                    <p className="max-w-xs text-xs">{item.title}</p>
+                                                </TooltipContent>
+                                            </Tooltip>
+                                        </TooltipProvider>
                                     </div>
                                 </Link>
                             </>
                         })
                     }
                 </div>
-                <div className="h-[30px] pt-2 flex justify-between items-center">
+                <div className="h-[50px] px-4 pt-2 flex justify-between items-center border-t dark:border-zinc-700">
                     <span className="text-xs text-gray-500">{getTime(data.updateTime)}更新</span>
-                    <UpdateIcon className="w-4 h-4 text-gray-500 cursor-pointer" onClick={() => getData()} />
+                    <div className="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-zinc-700 cursor-pointer transition-colors" onClick={() => getData()}>
+                        <UpdateIcon className="w-4 h-4 text-gray-500" />
+                    </div>
                 </div>
             </div>
         }
